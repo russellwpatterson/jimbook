@@ -34,6 +34,7 @@ namespace JimBook
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }
