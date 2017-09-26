@@ -2,7 +2,7 @@ if (typeof window.JimBook === "undefined" || window.JimBook === null) {
     window.JimBook = {};
 }
 
-window.JimBook.App = (function(window, $, ko) {
+window.JimBook.App = (function(window, $, ko, ApiClient) {
     "use strict";
 
     var posts = ko.observableArray([]);
@@ -35,6 +35,12 @@ window.JimBook.App = (function(window, $, ko) {
     function init() {
         console.log("Loaded.");
 
+        ApiClient.getPosts(function(data, status, xhr) {
+            $(data).each(function(i, item) {
+                posts.push(item);
+            });
+        });
+
         ko.applyBindings({
             posts: posts,
             newPostText: newPostText,
@@ -42,7 +48,18 @@ window.JimBook.App = (function(window, $, ko) {
             onSoGood: onSoGood,
             onNotSoGood: onNotSoGood
         });
-       // })());
+    }
+
+    return {
+        init: init
+    };
+})(window, jQuery, ko, window.JimBook.ApiClient);
+
+$(function() {
+    window.JimBook.App.init();
+});
+
+
 
     //    (function() {    
     //     var posts = ko.observableArray([
@@ -74,15 +91,3 @@ window.JimBook.App = (function(window, $, ko) {
     //     ]);
 
     //     return 
-
-
-    }
-
-    return {
-        init: init
-    };
-})(window, jQuery, ko);
-
-$(function() {
-    window.JimBook.App.init();
-});
