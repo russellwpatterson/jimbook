@@ -1,26 +1,88 @@
-window.JimBook = (function(window, $) {
-    'use strict';
+if (typeof window.JimBook === "undefined" || window.JimBook === null) {
+    window.JimBook = {};
+}
 
-    var selectors = {
-        soGoodButton: ".so-good-btn",
-        notSoGoodButton: ".not-so-good-btn"
-    };
+window.JimBook.App = (function(window, $, ko) {
+    "use strict";
+
+    var posts = ko.observableArray([]);
+    var newPostText = ko.observable("");
+
+    function onCreatePost() {
+        if (newPostText() === "") {
+            alert("Please enter a valid JimBook™ post!");
+            return;
+        }
+
+        posts.push({
+            postId: 1,
+            text: newPostText(),
+            soGoods: ko.observable(0),
+            notSoGoods: ko.observable(0)                        
+        });
+
+        newPostText("");
+    }
+
+    function onSoGood(post) {
+        post.soGoods(post.soGoods() + 1);
+    }
+    
+    function onNotSoGood(post) {
+        post.notSoGoods(post.notSoGoods() + 1);
+    }
 
     function init() {
         console.log("Loaded.");
-        $(selectors.soGoodButton).on("click", function() {
-            alert("So good.");
+
+        ko.applyBindings({
+            posts: posts,
+            newPostText: newPostText,
+            onCreatePost: onCreatePost,
+            onSoGood: onSoGood,
+            onNotSoGood: onNotSoGood
         });
-        $(selectors.notSoGoodButton).on("click", function() {
-            alert("Not so good.");
-        });
+       // })());
+
+    //    (function() {    
+    //     var posts = ko.observableArray([
+    //         {
+    //             postId: 1,
+    //             text: "Kids today.",
+    //             soGoods: 5,
+    //             notSoGoods: 15
+    //         },
+    //         {
+    //             postId: 2,
+    //             text: "D.R.Y.E.R.R.: Don't re-use your error-ridden rubbish.",
+    //             soGoods: 56,
+    //             notSoGoods: 2
+    //         },
+    //         {
+    //             postId: 3,
+    //             text: "So good.",
+    //             soGoods: 143,
+    //             notSoGoods: 0
+    //         },
+    //         {
+    //             postId: 4,
+    //             text: "I brought in some fruitsnacks.",
+    //             soGoods: 76,
+    //             notSoGoods: 32
+    //         }
+    //         // Subversion is a great datastore technology. I suggest it for all projects.
+    //     ]);
+
+    //     return 
+
+
     }
 
     return {
         init: init
     };
-})(window, jQuery);
+})(window, jQuery, ko);
 
-$(document).ready(function() {
-    window.JimBook.init();
+$(function() {
+    window.JimBook.App.init();
 });

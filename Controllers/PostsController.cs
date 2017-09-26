@@ -1,53 +1,80 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using JimBook.Models;
+using JimBook.Contexts;
+using System.Linq;
+using System;
+using System.Net;
 
 namespace JimBook.Controllers
 {
     [Route("api/posts")]
     public class PostsController : Controller
     {
+        private JimBookContext _context = null;
+
+        public PostsController(JimBookContext context)
+        {
+            this._context = context;
+        }
+
         [HttpGet]
         public IActionResult List()
         {
-            return Json(new List<Post>() {
-                new Post() {
-                    Id = 1,
-                    Title = "Test Post",
-                    Text = "This is the text!",
-                    SoGoods = 5,
-                    NotSoGoods = 4
-                }
-            });
+            return Json(this._context.Posts.ToList());
         }
 
         [HttpPost]
-        public IActionResult Create()
+        public IActionResult Create([FromBody] Post post)
         {
+            try 
+            {
+                this._context.Posts.Add(post);
+                this._context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+            
             return Ok();
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Post post)
+        [HttpPost("{id}/sogood")]
+        public IActionResult SoGood(int id)
         {
+            try 
+            {
+                var post = this._context.Posts.First(p => p.Id == id);
+
+                post.SoGoods++;
+
+                this._context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+            
             return Ok();
         }
 
-        [HttpPut("{id}/sogood")]
-        public IActionResult MarkSoGood(int id)
+        [HttpPost("{id}/notsogood")]
+        public IActionResult NotSoGood(int id)
         {
-            return Ok();
-        }
+            try 
+            {
+                var post = this._context.Posts.First(p => p.Id == id);
 
-        [HttpPut("{id}/notsogood")]
-        public IActionResult MarkNotSoGood(int id)
-        {
-            return Ok();
-        }
+                post.NotSoGoods++;
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id) 
-        {
+                this._context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return new StatusCodeResult(500);
+            }
+            
             return Ok();
         }
     }
