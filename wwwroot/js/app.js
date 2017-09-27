@@ -14,37 +14,49 @@ window.JimBook.App = (function(window, $, ko, ApiClient) {
             return;
         }
 
-        posts.push({
-            postId: 1,
+        var post = {
             text: newPostText(),
-            soGoods: ko.observable(0),
-            notSoGoods: ko.observable(0)                        
-        });
+            soGoods: 0,
+            notSoGoods: 0                        
+        };
 
-        newPostText("");
+        ApiClient.createPost(post, function(data, status, xhr) {
+            posts.push(ko.mapping.fromJS(data));
+            newPostText("");
+        });
+    }
+
+    function onKeyPress(element, event) {
+        event.keyCode === 13 && onCreatePost();  
+        return true;
     }
 
     function onSoGood(post) {
-        post.soGoods(post.soGoods() + 1);
+        ApiClient.voteSoGood(post.id(), function(data, status, xhr) {
+            post.soGoods(post.soGoods() + 1);            
+        });
     }
     
     function onNotSoGood(post) {
-        post.notSoGoods(post.notSoGoods() + 1);
+        ApiClient.voteNotSoGood(post.id(), function(data, status, xhr) {
+            post.notSoGoods(post.notSoGoods() + 1);
+        });
     }
 
     function init() {
-        console.log("Loaded.");
-
         ApiClient.getPosts(function(data, status, xhr) {
             $(data).each(function(i, item) {
-                posts.push(item);
+                var convertedItem = ko.mapping.fromJS(item);
+                posts.push(convertedItem);
             });
-        });
 
+        });
+        
         ko.applyBindings({
             posts: posts,
             newPostText: newPostText,
             onCreatePost: onCreatePost,
+            onKeyPress: onKeyPress,
             onSoGood: onSoGood,
             onNotSoGood: onNotSoGood
         });
@@ -58,36 +70,3 @@ window.JimBook.App = (function(window, $, ko, ApiClient) {
 $(function() {
     window.JimBook.App.init();
 });
-
-
-
-    //    (function() {    
-    //     var posts = ko.observableArray([
-    //         {
-    //             postId: 1,
-    //             text: "Kids today.",
-    //             soGoods: 5,
-    //             notSoGoods: 15
-    //         },
-    //         {
-    //             postId: 2,
-    //             text: "D.R.Y.E.R.R.: Don't re-use your error-ridden rubbish.",
-    //             soGoods: 56,
-    //             notSoGoods: 2
-    //         },
-    //         {
-    //             postId: 3,
-    //             text: "So good.",
-    //             soGoods: 143,
-    //             notSoGoods: 0
-    //         },
-    //         {
-    //             postId: 4,
-    //             text: "I brought in some fruitsnacks.",
-    //             soGoods: 76,
-    //             notSoGoods: 32
-    //         }
-    //         // Subversion is a great datastore technology. I suggest it for all projects.
-    //     ]);
-
-    //     return 

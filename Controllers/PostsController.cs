@@ -37,7 +37,7 @@ namespace JimBook.Controllers
                 return new StatusCodeResult(500);
             }
             
-            return Ok();
+            return Ok(post);
         }
 
         [HttpPost("{id}/sogood")]

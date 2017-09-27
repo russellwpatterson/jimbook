@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control input-lg" id="post-text" placeholder="Write a post..." data-bind="value: newPostText" />
+                        <input type="text" class="form-control input-lg" id="post-text" placeholder="Write a post..." data-bind="value: newPostText, event: {keypress: onKeyPress}" />
                         <span class="input-group-btn">
                             <button id="post-btn" class="btn btn-success btn-lg" data-bind="click: onCreatePost">Post</button>
                         </span>
@@ -63,6 +63,7 @@
         <script src="js/vendor/jquery-3.2.1.min.js"></script>
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/vendor/knockout-3.4.2.js"></script>
+        <script src="js/vendor/knockout.mapping-latest.js"></script>
         <script src="js/vendor/spin.min.js"></script>
         <script src="js/client.js"></script>
         <script src="js/app.js"></script>

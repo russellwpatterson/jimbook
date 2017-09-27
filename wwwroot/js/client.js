@@ -13,19 +13,53 @@ window.JimBook.ApiClient = (function(window, $) {
     };
 
     function createPost(data, callback) {
-        //$.post()
+        $.post({
+            url: "/api/posts/",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function(data, status, xhr) {
+                if (typeof callback === 'function') {
+                    callback(data, status, xhr);
+                }
+            }
+        });
+        
+        // $.post("/api/posts/", data, function(data, status, xhr) {
+        //     if (typeof callback === 'function') {
+        //         callback(data, status, xhr);
+        //     }
+        // });
     }
 
-    function getPosts(successCallback) {
-        $.get(urls.list, function(data, status, xhr) {
-            if (typeof successCallback === 'function') {
-                successCallback(data, status, xhr);
+    function getPosts(callback) {
+        $.get("/api/posts/", function(data, status, xhr) {
+            if (typeof callback === 'function') {
+                callback(data, status, xhr);
+            }
+        });
+    }
+    
+    function voteSoGood(postId, callback) {
+        $.post("/api/posts/" + postId + "/sogood", function(data, status, xhr) {
+            if (typeof callback === 'function') {
+                callback(data, status, xhr);
+            }
+        });
+    }
+    
+    function voteNotSoGood(postId, callback) {
+        $.post("/api/posts/" + postId + "/notsogood", function(data, status, xhr) {
+            if (typeof callback === 'function') {
+                callback(data, status, xhr);
             }
         });
     }
 
     return {
-        getPosts: getPosts
+        getPosts: getPosts,
+        createPost: createPost,
+        voteSoGood: voteSoGood,
+        voteNotSoGood: voteNotSoGood
     };
 
 })(window, jQuery);
