@@ -4,14 +4,7 @@ if (typeof window.JimBook === "undefined" || window.JimBook === null) {
 
 window.JimBook.ApiClient = (function(window, $) {
     "use strict";
-
-    var urls = {
-        list: "/api/posts/",
-        create: "/api/posts/",
-        soGood: "/api/posts/{{id}}/sogood",
-        notSoGood: "/api/posts/{{id}}/notsogood"
-    };
-
+    
     function createPost(data, callback) {
         $.post({
             url: "/api/posts/",
