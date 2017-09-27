@@ -23,12 +23,6 @@ window.JimBook.ApiClient = (function(window, $) {
                 }
             }
         });
-        
-        // $.post("/api/posts/", data, function(data, status, xhr) {
-        //     if (typeof callback === 'function') {
-        //         callback(data, status, xhr);
-        //     }
-        // });
     }
 
     function getPosts(callback) {
