@@ -1,0 +1,14 @@
+[Unit]
+Description=JimBook
+
+[Service]
+WorkingDirectory=/var/aspnetcore/jimbook
+ExecStart=/usr/bin/dotnet /var/aspnetcore/jimbook/JimBook.dll
+Restart=always
+RestartSec=10
+SyslogIdentifier=JimBook
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production 
+
+[Install]
+WantedBy=multi-user.target
