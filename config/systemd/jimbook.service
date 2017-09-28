@@ -2,8 +2,8 @@
 Description=JimBook
 
 [Service]
-WorkingDirectory=/var/aspnetcore/jimbook
-ExecStart=/usr/bin/dotnet /var/aspnetcore/jimbook/JimBook.dll
+WorkingDirectory=/opt/jimbook
+ExecStart=/usr/bin/dotnet /opt/jimbook/JimBook.dll
 Restart=always
 RestartSec=10
 SyslogIdentifier=JimBook

@@ -32,7 +32,7 @@ namespace JimBook.Controllers
                 this._context.Posts.Add(post);
                 this._context.SaveChanges();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new StatusCodeResult(500);
             }
@@ -51,7 +51,7 @@ namespace JimBook.Controllers
 
                 this._context.SaveChanges();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new StatusCodeResult(500);
             }
@@ -70,7 +70,7 @@ namespace JimBook.Controllers
 
                 this._context.SaveChanges();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new StatusCodeResult(500);
             }
